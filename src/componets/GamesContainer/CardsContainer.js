@@ -9,7 +9,11 @@ import {
 import { StarIcon } from "@heroicons/react/24/solid";
 const CardsContainer = () => {
   return (
-    <Card color="transparent" shadow={false} className="w-full max-w-[26rem]">
+    <Card
+      color="transparent"
+      shadow={false}
+      className="w-full max-w-[26rem] bg-blue-200"
+    >
       <CardHeader
         color="transparent"
         floated={false}
@@ -17,7 +21,7 @@ const CardsContainer = () => {
         className="mx-0 flex items-center gap-4 pt-0 pb-8"
       >
         <Avatar
-          style={{ width: "20px" }}
+          style={{ width: "40px", height: "40px" }}
           size="lg"
           variant="circular"
           src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"

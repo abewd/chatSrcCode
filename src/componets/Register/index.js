@@ -1,172 +1,114 @@
-import React, { useState, useRef } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-import { isEmail } from "validator";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import "./index.css"
+const SignupPage = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-import AuthService from "../services/auth.service";
-
-const required = (value) => {
-  if (!value) {
-    return (
-      <div className="invalid-feedback d-block">This field is required!</div>
-    );
-  }
-};
-
-const validEmail = (value) => {
-  if (!isEmail(value)) {
-    return (
-      <div className="invalid-feedback d-block">This is not a valid email.</div>
-    );
-  }
-};
-
-const vusername = (value) => {
-  if (value.length < 3 || value.length > 20) {
-    return (
-      <div className="invalid-feedback d-block">
-        The username must be between 3 and 20 characters.
-      </div>
-    );
-  }
-};
-
-const vpassword = (value) => {
-  if (value.length < 6 || value.length > 40) {
-    return (
-      <div className="invalid-feedback d-block">
-        The password must be between 6 and 40 characters.
-      </div>
-    );
-  }
-};
-
-const Register = (props) => {
-  const form = useRef();
-  const checkBtn = useRef();
-
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [successful, setSuccessful] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const onChangeUsername = (e) => {
-    const username = e.target.value;
-    setUsername(username);
-  };
-
-  const onChangeEmail = (e) => {
-    const email = e.target.value;
-    setEmail(email);
-  };
-
-  const onChangePassword = (e) => {
-    const password = e.target.value;
-    setPassword(password);
-  };
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-
-    setMessage("");
-    setSuccessful(false);
-
-    form.current.validateAll();
-
-    if (checkBtn.current.context._errors.length === 0) {
-      AuthService.register(username, email, password).then(
-        (response) => {
-          setMessage(response.data.message);
-          setSuccessful(true);
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          setMessage(resMessage);
-          setSuccessful(false);
-        }
-      );
-    }
+  const onSubmit = (data) => {
+    setIsSubmitting(true);
+    console.log(data); // replace with your actual submit function
   };
 
   return (
-    <div className="col-md-12">
-      <div className="card card-container">
-        <img
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          alt="profile-img"
-          className="profile-img-card"
-        />
-
-        <Form onSubmit={handleRegister} ref={form}>
-          {!successful && (
-            <div>
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="username"
-                  value={username}
-                  onChange={onChangeUsername}
-                  validations={[required, vusername]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  name="email"
-                  value={email}
-                  onChange={onChangeEmail}
-                  validations={[required, validEmail]}
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <Input
-                  type="password"
-                  className="form-control"
-                  name="password"
-                  value={password}
-                  onChange={onChangePassword}
-                  validations={[required, vpassword]}
-                />
-              </div>
-
-              <div className="form-group">
-                <button className="btn btn-primary btn-block">Sign Up</button>
-              </div>
-            </div>
-          )}
-
-          {message && (
-            <div className="form-group">
-              <div
-                className={
-                  successful ? "alert alert-success" : "alert alert-danger"
-                }
-                role="alert"
-              >
-                {message}
-              </div>
-            </div>
-          )}
-          <CheckButton style={{ display: "none" }} ref={checkBtn} />
-        </Form>
+    <div className="flex flex-col items-center justify-center min-h-screen ">
+      <div className="w-full max-w-md formContainer">
+        <h2 className="text-3xl font-bold text-center mb-8">Sign Up</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block font-medium">
+              Email
+            </label>
+            <input
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: "Invalid email address",
+                },
+              })}
+              id="email"
+              type="email"
+              className={`w-full mt-1 rounded-md border-gray-300 ${errors.email ? "border-red-500" : ""
+                }`}
+            />
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+            )}
+          </div>
+          <div>
+            <label htmlFor="username" className="block font-medium">
+              Username
+            </label>
+            <input
+              {...register("username", {
+                required: "Username is required",
+                minLength: {
+                  value: 3,
+                  message: "Username must be at least 3 characters long",
+                },
+              })}
+              id="username"
+              type="text"
+              className={`w-full mt-1 rounded-md border-gray-300 ${errors.username ? "border-red-500" : ""
+                }`}
+            />
+            {errors.username && (
+              <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
+            )}
+          </div>
+          <div>
+            <label htmlFor="password" className="block font-medium">
+              Password
+            </label>
+            <input
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters long",
+                },
+              })}
+              id="password"
+              type="password"
+              className={`w-full mt-1 rounded-md border-gray-300 ${errors.password ? "border-red-500" : ""
+                }`}
+            />
+            {errors.password && (
+              <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+            )}
+          </div>
+          <div>
+            <label htmlFor="confirmPassword" className="block font-medium">
+              Confirm Password
+            </label>
+            <input
+              {...register("confirmPassword", {
+                required: "Confirm password is required",
+                validate: (value) =>
+                  value === document.getElementById("password").value ||
+                  "The passwords do not match",
+              })}
+              id="confirmPassword"
+              type="password"
+              className={`w-full mt-1 rounded-md border-gray-300 ${errors.confirmPassword ? "border-red-500" : ""
+                }`}
+            />
+            {errors.confirmPassword && (
+              <p className="mt-1 text-sm text-red-500">{errors.confirmPassword.message}</p>
+            )}
+          </div>
+          <button
+            type="submit"
+            className={`w-full py-2 px-4 ${isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+              } text-white font-medium rounded-md transition-colors duration-300`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Submitting..." : "Submit"}
+          </button>
+        </form>
       </div>
     </div>
-  );
-};
-
-export default Register;
+  )
+}
+export default SignupPage;

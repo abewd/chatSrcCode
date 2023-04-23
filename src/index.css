@@ -3,3 +3,16 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+.App {
+  background-image: url("./assests/backgroundImage.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.formContainer {
+  background: #9bb7b396;
+  border: 3px solid #eae0e07a;
+  border-radius: 34px;
+  padding: 40px;
+  margin: 10px  ;
+}

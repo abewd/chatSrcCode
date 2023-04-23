@@ -3,10 +3,10 @@ import Register from "./componets/Register/index";
 import Signin from "./componets/Signin/index";
 import Landing from "./componets/Home/index";
 import Home from "./Pages/Home/home";
-import Login from "./componets/Login/login";
+import Login from "./componets/Login/Login";
 import Header from "./componets/Header/index";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import "./index.css"
 function App() {
   return (
     <div className="App">

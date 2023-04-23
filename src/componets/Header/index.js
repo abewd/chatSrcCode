@@ -1,72 +1,44 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 // This is for navigating into new pages like login pages
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const Navigate = useNavigate();
-  const handleLogin = () => {
-    Navigate("/login");
-    // handle account login logic here
-  };
-  const handleCreateAccount = () => {
-    Navigate("/register");
-  };
-  const handleGoToHome = () => {
-    Navigate("/");
-  };
 
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  function handleDropdownToggle() {
+    setShowDropdown(!showDropdown);
+  }
   return (
-    <div className="bg-gray-800 text-white flex justify-between items-center px-4 py-3">
-      <div className="flex items-center">
-        <button
-          onClick={handleGoToHome}
-          className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Home{" "}
-        </button>
-        <button
-          onClick={handleCreateAccount}
-          className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Create Account
-        </button>
-        <button
-          onClick={handleLogin}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Login
-        </button>
-      </div>
-      <div className="relative">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Dropdown
-        </button>
-        <ul className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg z-10 hidden">
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 text-white hover:bg-gray-900"
-            >
-              Option 1
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 text-white hover:bg-gray-900"
-            >
-              Option 2
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 text-white hover:bg-gray-900"
-            >
-              Option 3
-            </a>
-          </li>
-        </ul>
+    <div className="bg-cyan-600 py-4">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center">
+            <Link to="/" className="text-gray-300 hover:text-white mr-4">Home</Link>
+            <Link to="/register" className="text-gray-300 hover:text-white mr-4">Sign Up</Link>
+            <Link to="/login" className="text-gray-300 hover:text-white">Login </Link>
+          </div>
+          <div>
+            <div>
+              <div className="relative">
+                <button
+                  className="text-gray-300 hover:text-white"
+                  onClick={handleDropdownToggle}
+                  onBlur={() => setShowDropdown(false)}
+                >
+                  Link 3
+                </button>
+                {showDropdown && (
+                  <div className="absolute top-full right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-lg">
+                    <Link to="/" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Dropdown Link 1</Link>
+                    <Link to="/" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">Dropdown Link 2</Link>
+                  </div>
+                )}
+              </div>
+            </div>          </div>
+        </div>
       </div>
     </div>
   );

@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import "./Login.css"
+import "./Login.css";
 const SignupPage = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = (data) => {
     setIsSubmitting(true);
-    console.log(data); // replace with your actual submit function
+    console.log(data);
   };
 
   return (
@@ -23,17 +27,21 @@ const SignupPage = () => {
               {...register("email", {
                 required: "Email is required",
                 pattern: {
+                  // regex
                   value: /^\S+@\S+$/i,
                   message: "Invalid email address",
                 },
               })}
               id="email"
               type="email"
-              className={`w-full mt-1 rounded-md border-gray-300 ${errors.email ? "border-red-500" : ""
-                }`}
+              className={`w-full mt-1 rounded-md border-gray-300 ${
+                errors.email ? "border-red-500" : ""
+              }`}
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
+              <p className="mt-1 text-sm text-red-500">
+                {errors.email.message}
+              </p>
             )}
           </div>
           {/* <div>
@@ -71,18 +79,24 @@ const SignupPage = () => {
               })}
               id="password"
               type="password"
-              className={`w-full mt-1 rounded-md border-gray-300 ${errors.password ? "border-red-500" : ""
-                }`}
+              className={`w-full mt-1 rounded-md border-gray-300 ${
+                errors.password ? "border-red-500" : ""
+              }`}
             />
             {errors.password && (
-              <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
+              <p className="mt-1 text-sm text-red-500">
+                {errors.password.message}
+              </p>
             )}
           </div>
-         
+
           <button
             type="submit"
-            className={`w-full py-2 px-4 ${isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
-              } text-white font-medium rounded-md transition-colors duration-300`}
+            className={`w-full py-2 px-4 ${
+              isSubmitting
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
+            } text-white font-medium rounded-md transition-colors duration-300`}
             disabled={isSubmitting}
           >
             {isSubmitting ? "Submitting..." : "Submit"}
@@ -90,6 +104,6 @@ const SignupPage = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 export default SignupPage;

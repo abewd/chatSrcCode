@@ -38,7 +38,8 @@ const Chats = () => {
           }}
         >
           <div style={{ display: "flex", gap: "1rem" }}>
-            <h2>Logo</h2>
+            {/* this will redirect to home if you want it to... but ive sacked it for now */}
+            {/* <h2>Logo</h2> */}
           </div>
           <div style={{ display: "flex", gap: "1rem" }}>
             <button style={{ padding: "0.5rem 1rem" }}>Create group</button>

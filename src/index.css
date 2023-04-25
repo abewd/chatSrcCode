@@ -4,7 +4,8 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
 .App {
-  background-image: url("./assests/backgroundImage.jpg");
+  /* this is for the old background, i dont recommend... lol */
+  /* background-image: url("./assests/backgroundImage.jpg"); */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -14,5 +15,14 @@
   border: 3px solid #eae0e07a;
   border-radius: 34px;
   padding: 40px;
-  margin: 10px  ;
+  margin: 10px;
+}
+
+@layer utilities {
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
 }

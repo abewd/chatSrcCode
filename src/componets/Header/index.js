@@ -29,7 +29,7 @@ const Header = () => {
               Login{" "}
             </Link>
 
-            <Link to="/chats" className="text-gray-300 hover:text-white">
+            <Link to="/chats" className="text-gray-300 hover:text-white p-3">
               Chats{" "}
             </Link>
           </div>

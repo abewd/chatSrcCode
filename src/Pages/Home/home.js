@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../componets/Header/index";
 import Animations from "../../componets/Animations/Animations";
 import GamesContainer from "../../componets/GamesContainer/GamesContainer";
-import "./home.css";
+// import "./home.css";
 
 const home = () => {
   return (

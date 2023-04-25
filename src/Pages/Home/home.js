@@ -6,8 +6,8 @@ import GamesContainer from "../../componets/GamesContainer/GamesContainer";
 const home = () => {
   return (
     <div>
-      <div class="flex flex-row">
-        <div class="basis-1/2 m-3">
+      <div class="flex flex-row " style={{ height: "100vh" }}>
+        <div class="basis-1/2 m-3 ">
           {" "}
           <GamesContainer />
         </div>

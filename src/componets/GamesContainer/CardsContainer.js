@@ -42,17 +42,34 @@ const CardsContainer = () => {
             </div>
           </div>
           <Typography color="white" className="text-sm">
-            Frontend Lead @ Google
+            Abewd @ Sydney
           </Typography>
         </div>
       </CardHeader>
       <CardBody className="px-6 pt-4 pb-6">
         <Typography className="text-gray-700 text-base leading-relaxed">
-          &quot;I found solution to all my design needs from Creative Tim. I use
-          them as a freelancer in my hobby projects for fun! And its really
-          affordable, very humble guys !!!&quot;
+          &quot;Hi Hello this is our website We are doing chat things And we are
+          doing multiplaer and solo things Please update this with proper stuff
+          and thigns&quot;
         </Typography>
       </CardBody>
+      <div className="flex w-full flex-col gap-1">
+        <div className="flex items-center justify-between">
+          <Typography variant="h5" color="white">
+            Candice Wu
+          </Typography>
+          <div className="5 flex items-center gap-0">
+            <StarIcon className="h-5 w-5 text-yellow-700" />
+            <StarIcon className="h-5 w-5 text-yellow-700" />
+            <StarIcon className="h-5 w-5 text-yellow-700" />
+            <StarIcon className="h-5 w-5 text-yellow-700" />
+            <StarIcon className="h-5 w-5 text-yellow-700" />
+          </div>
+        </div>
+        <Typography color="white" className="text-sm">
+          Abewd @ Sydney
+        </Typography>
+      </div>
     </Card>
   );
 };

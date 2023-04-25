@@ -5,14 +5,23 @@ import GamesContainer from "../../componets/GamesContainer/GamesContainer";
 
 const home = () => {
   return (
-    <div>
-      <div class="flex flex-row " style={{ height: "100vh" }}>
-        <div class="basis-1/2 m-3 ">
+    <div className="p-4 ">
+      <div className="flex flex-row animationContainer rounded-lg m-3">
+        <div class="basis-1/2 m-3 p-3 ">
           {" "}
           <GamesContainer />
         </div>
-        <div class="basis-1/2">
+        <div className="basis-1/2 p-8">
           <Animations />
+        </div>
+      </div>
+      <div className="flex flex-row animationContainer rounded-lg m-3">
+        <div class="basis-1/2 m-3 p-3 ">
+          {" "}
+          <Animations />
+        </div>
+        <div className="basis-1/2 p-8">
+          <GamesContainer />
         </div>
       </div>
     </div>

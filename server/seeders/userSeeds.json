@@ -2,26 +2,26 @@
     {
       "username": "AbewdIsCool",
       "email": "abewd@gmail.com",
-      "password": "Password1"
+      "password": "Password1!"
     },
     {
       "username": "AdzyIsCool",
       "email": "adam@gmail.com",
-      "password": "Password1"
+      "password": "Password1!"
     },
     {
       "username": "Jordan",
       "email": "jordan@gmail.com",
-      "password": "Password1"
+      "password": "Password1!"
     },
     {
       "username": "test-user",
       "email": "test1@testing.com",
-      "password": "Password1"
+      "password": "Password1!"
     },
     {
       "username": "user-testing",
       "email": "test2@testing.com",
-      "password": "Password1"
+      "password": "Password1!"
     }
-  ]
+]

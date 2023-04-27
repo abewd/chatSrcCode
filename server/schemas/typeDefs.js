@@ -14,15 +14,7 @@ const typeDefs = gql`
     chatText: String
     chatAuthor: String
     createdAt: String
-    // comments: [Comment]!
   }
-
-//   type Comment {
-//     _id: ID
-//     commentText: String
-//     commentAuthor: String
-//     createdAt: String
-//   }
 
   type Auth {
     token: ID!
@@ -41,9 +33,10 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
     addChat(chatText: String!): Chat
-    // addComment(chatId: ID!, commentText: String!): Chat
-    removeChat(thoughtId: ID!): Chat
-    removeComment(chatId: ID!, commentId: ID!): Chat
+    removeChat(ChatId: ID!): Chat
+    getMessages(from: String!, to: String!): [Chat]
+    addMessage(to: String!, message: String!): Chat
+    removeMessage(messageId: ID!): Chat
   }
 `;
 

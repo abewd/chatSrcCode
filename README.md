@@ -70,7 +70,3 @@ The following image shows the application's IndexedDB storage:
 ## **Deployment**
 
 <!-- [This is a link to the deployed site:  text-editor-jog.herokuapp.com/](https://text-editor-jog.herokuapp.com/) -->
-
----
-
-[![](https://visitcount.itsvg.in/api?id=JordanNotAvailable/team-chat&icon=5&color=6)](https://visitcount.itsvg.in)

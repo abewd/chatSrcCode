@@ -162,10 +162,8 @@ const resolvers = {
           recipient.notifications.push(notification);
           await recipient.save();
     
-          return {
-            fromSelf: true,
-            message: newMessage.message.text,
-          };
+          return newMessage
+          
         } catch (ex) {
           throw new Error("Could not add message");
         }

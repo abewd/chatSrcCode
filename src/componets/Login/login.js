@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import "./index.css";
+import "./Login.css";
 const SignupPage = () => {
   const {
     register,
@@ -11,20 +11,19 @@ const SignupPage = () => {
 
   const onSubmit = (data) => {
     setIsSubmitting(true);
-    console.log(data); // replace with your actual submit function
+    console.log(data);
   };
 
   return (
-    <div class="bg-gray-50 min-h-screen flex items-center justify-center px-16">
-      <div class="relative w-full max-w-lg">
-        <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        <div class="m-8 relative space-y-4">
-          {" "}
+    <div className="bg-gray-50 min-h-screen flex items-center justify-center px-16">
+      <div className="relative w-full max-w-lg">
+        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+        <div className="m-8 relative space-y-4">
           <div className="flex flex-col items-center justify-center min-h-screen ">
             <div className="w-full max-w-md formContainer">
-              <h2 className="text-3xl font-bold text-center mb-8">Sign Up</h2>
+              <h2 className="text-3xl font-bold text-center mb-8">Log In</h2>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div>
                   <label htmlFor="email" className="block font-medium">
@@ -34,6 +33,7 @@ const SignupPage = () => {
                     {...register("email", {
                       required: "Email is required",
                       pattern: {
+                        // regex
                         value: /^\S+@\S+$/i,
                         message: "Invalid email address",
                       },
@@ -50,30 +50,27 @@ const SignupPage = () => {
                     </p>
                   )}
                 </div>
-                <div>
-                  <label htmlFor="username" className="block font-medium">
-                    Username
-                  </label>
-                  <input
-                    {...register("username", {
-                      required: "Username is required",
-                      minLength: {
-                        value: 3,
-                        message: "Username must be at least 3 characters long",
-                      },
-                    })}
-                    id="username"
-                    type="text"
-                    className={`w-full mt-1 rounded-md border-gray-300 ${
-                      errors.username ? "border-red-500" : ""
-                    }`}
-                  />
-                  {errors.username && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.username.message}
-                    </p>
-                  )}
-                </div>
+                {/* <div>
+            <label htmlFor="username" className="block font-medium">
+              Username
+            </label>
+            <input
+              {...register("username", {
+                required: "Username is required",
+                minLength: {
+                  value: 3,
+                  message: "Username must be at least 3 characters long",
+                },
+              })}
+              id="username"
+              type="text"
+              className={`w-full mt-1 rounded-md border-gray-300 ${errors.username ? "border-red-500" : ""
+                }`}
+            />
+            {errors.username && (
+              <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
+            )}
+          </div> */}
                 <div>
                   <label htmlFor="password" className="block font-medium">
                     Password
@@ -98,32 +95,7 @@ const SignupPage = () => {
                     </p>
                   )}
                 </div>
-                <div>
-                  <label
-                    htmlFor="confirmPassword"
-                    className="block font-medium"
-                  >
-                    Confirm Password
-                  </label>
-                  <input
-                    {...register("confirmPassword", {
-                      required: "Confirm password is required",
-                      validate: (value) =>
-                        value === document.getElementById("password").value ||
-                        "The passwords do not match",
-                    })}
-                    id="confirmPassword"
-                    type="password"
-                    className={`w-full mt-1 rounded-md border-gray-300 ${
-                      errors.confirmPassword ? "border-red-500" : ""
-                    }`}
-                  />
-                  {errors.confirmPassword && (
-                    <p className="mt-1 text-sm text-red-500">
-                      {errors.confirmPassword.message}
-                    </p>
-                  )}
-                </div>
+
                 <button
                   type="submit"
                   className={`w-full py-2 px-4 ${
@@ -143,4 +115,5 @@ const SignupPage = () => {
     </div>
   );
 };
+
 export default SignupPage;

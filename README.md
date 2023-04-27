@@ -65,12 +65,12 @@ The following image shows the application's IndexedDB storage:
 [Jordan O'Grady's Github Profile ](https://github.com/JordanNotAvailable).
 ---
 
+<!-- Github visitors count -->
+
+<!-- [![](https://visitcount.itsvg.in/api?id=JordanNotAvailable/team-chatt&icon=0&color=0)](https://visitcount.itsvg.in) -->
+
 ---
 
 ## **Deployment**
 
 <!-- [This is a link to the deployed site:  text-editor-jog.herokuapp.com/](https://text-editor-jog.herokuapp.com/) -->
-
----
-
-[![](https://visitcount.itsvg.in/api?id=JordanNotAvailable/team-chat&icon=5&color=6)](https://visitcount.itsvg.in)

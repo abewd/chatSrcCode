@@ -5,14 +5,14 @@ const chatSeeds = require('./chatSeeds.json');
 
 db.once('open', async () => {
   try {
-    await Chat.deleteMany({});
-    await User.deleteMany({});
+    Chat.deleteMany({});
+    User.deleteMany({});
 
-    await User.create(userSeeds);
+    User.create(userSeeds);
 
     for (let i = 0; i < chatSeeds.length; i++) {
-      const { _id, chatAuthor } = await Chat.create(chatSeeds[i]);
-      const user = await User.findOneAndUpdate(
+      const { _id, chatAuthor } = Chat.create(chatSeeds[i]);
+      const user = User.findOneAndUpdate(
         { username: chatAuthor },
         {
           $addToSet: {

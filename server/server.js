@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
@@ -6,6 +7,18 @@ const { authMiddleware } = require('./utils/auth');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const Message = require('./models/Chats');
+=======
+
+  const express = require('express');
+  const path = require('path');
+  const cors = require('cors');
+  const mongoose = require('mongoose');
+  const { ApolloServer } = require('apollo-server-express');
+  const { authMiddleware } = require('./utils/auth');
+  const { typeDefs, resolvers } = require('./schemas');
+  const db = require('./config/connection');
+  const Message = require('./models/Chat');
+>>>>>>> Stashed changes
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -54,8 +67,20 @@ const startApolloServer = async () => {
   //   });
   // });
 
+<<<<<<< Updated upstream
   await server.start();
   server.applyMiddleware({ app /*, path: '/graphql'*/ });
+=======
+      const newMessage = await Message.create(message);
+
+      io.emit('new-message', newMessage);
+    });
+  });
+
+  const startApolloServer = async (typeDefs, resolvers) => {
+
+  server.applyMiddleware({ app });
+>>>>>>> Stashed changes
 
   db.once('open', () => {
     app.listen(PORT, () => {

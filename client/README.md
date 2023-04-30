@@ -65,10 +65,6 @@ The following image shows the application's IndexedDB storage:
 [Jordan O'Grady's Github Profile ](https://github.com/JordanNotAvailable).
 ---
 
-<!-- Github visitors count -->
-
-<!-- [![](https://visitcount.itsvg.in/api?id=JordanNotAvailable/team-chatt&icon=0&color=0)](https://visitcount.itsvg.in) -->
-
 ---
 
 ## **Deployment**

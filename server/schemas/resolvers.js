@@ -1,7 +1,7 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User, Chat } = require("../models");
 const { signToken } = require("../utils/auth");
-const bcrypt = require("bcrypt"); // Added bycrypt for chat messages //need to look at connecting bycyrpt to functions
+const bcrypt = require("bcrypt");
 
 const resolvers = {
   Query: {
@@ -33,7 +33,7 @@ const resolvers = {
       return { token, user };
     },
 
-    // Function below is for getting all users nmot sure if need will need to refractor code for our repo
+    // Function below is for getting all users, not sure if needed, will need to refractor
     // module.exports.getAllUsers = async (req, res, next) => {
     //   try {
     //     const users = await User.find({ _id: { $ne: req.params.id } }).select([

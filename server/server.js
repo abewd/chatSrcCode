@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
@@ -7,18 +6,6 @@ const { authMiddleware } = require('./utils/auth');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const Message = require('./models/Chats');
-=======
-
-  const express = require('express');
-  const path = require('path');
-  const cors = require('cors');
-  const mongoose = require('mongoose');
-  const { ApolloServer } = require('apollo-server-express');
-  const { authMiddleware } = require('./utils/auth');
-  const { typeDefs, resolvers } = require('./schemas');
-  const db = require('./config/connection');
-  const Message = require('./models/Chat');
->>>>>>> Stashed changes
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -42,45 +29,34 @@ app.get('/', (req, res) => {
 });
 
 // Socket.io setup
-// const httpServer = require('http').createServer(app);
-// const io = require('socket.io')(httpServer, {
-//   cors: {
-//     origin: 'http://localhost:3000',
-//     credentials: true,
-//   },
-// });
+const httpServer = require('http').createServer(app);
+const io = require('socket.io')(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+    credentials: true,
+  },
+});
 
-const startApolloServer = async () => {
-  // io.on('connection', (socket) => {
-  //   console.log('User connected', socket.id);
+io.on('connection', (socket) => {
+  console.log('User connected', socket.id);
 
-  //   socket.on('disconnect', () => {
-  //     console.log('User disconnected', socket.id);
-  //   });
-
-  //   socket.on('new-message', async (message) => {
-  //     console.log('New message received', message);
-
-  //     const newMessage = await Message.create(message);
-
-  //     io.emit('new-message', newMessage);
-  //   });
-  // });
-
-<<<<<<< Updated upstream
-  await server.start();
-  server.applyMiddleware({ app /*, path: '/graphql'*/ });
-=======
-      const newMessage = await Message.create(message);
-
-      io.emit('new-message', newMessage);
-    });
+  socket.on('disconnect', () => {
+    console.log('User disconnected', socket.id);
   });
 
-  const startApolloServer = async (typeDefs, resolvers) => {
+  socket.on('new-message', async (message) => {
+    console.log('New message received', message);
 
+    const newMessage = await Message.create(message);
+
+    io.emit('new-message', newMessage);
+  });
+});
+
+const startApolloServer = async () => {
+
+  await server.start();
   server.applyMiddleware({ app });
->>>>>>> Stashed changes
 
   db.once('open', () => {
     app.listen(PORT, () => {

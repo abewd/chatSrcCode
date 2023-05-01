@@ -50,7 +50,7 @@ const SignupPage = () => {
                     </p>
                   )}
                 </div>
-                {/* <div>
+                <div>
             <label htmlFor="username" className="block font-medium">
               Username
             </label>
@@ -70,7 +70,7 @@ const SignupPage = () => {
             {errors.username && (
               <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
             )}
-          </div> */}
+          </div>
                 <div>
                   <label htmlFor="password" className="block font-medium">
                     Password

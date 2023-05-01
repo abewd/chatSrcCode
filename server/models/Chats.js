@@ -1,4 +1,4 @@
-const { Schema, model, mongoose } = require('mongoose');
+const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
 const chatSchema = new Schema({
@@ -10,7 +10,7 @@ const chatSchema = new Schema({
   },
   users: Array,
     sender: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },

@@ -1,18 +1,28 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "./Login.css";
-const SignupPage = () => {
+
+const LoginPage = () => {
   const {
     register,
     handleSubmit,
+    trigger,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    mode: "onTouched",
+  });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = (data) => {
     setIsSubmitting(true);
     console.log(data);
   };
+
+  const handleChange = async (field) => {
+    await trigger(field);
+  };
+
 
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center px-16">
@@ -25,7 +35,7 @@ const SignupPage = () => {
             <div className="w-full max-w-md formContainer">
               <h2 className="text-3xl font-bold text-center mb-8">Log In</h2>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <div>
+              <div>
                   <label htmlFor="email" className="block font-medium">
                     Email
                   </label>
@@ -34,12 +44,13 @@ const SignupPage = () => {
                       required: "Email is required",
                       pattern: {
                         // regex
-                        value: /^\S+@\S+$/i,
+                        value: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
                         message: "Invalid email address",
                       },
                     })}
                     id="email"
                     type="email"
+                    onChange={() => handleChange("email")}
                     className={`w-full mt-1 rounded-md border-gray-300 ${
                       errors.email ? "border-red-500" : ""
                     }`}
@@ -50,27 +61,31 @@ const SignupPage = () => {
                     </p>
                   )}
                 </div>
-                {/* <div>
-            <label htmlFor="username" className="block font-medium">
-              Username
-            </label>
-            <input
-              {...register("username", {
-                required: "Username is required",
-                minLength: {
-                  value: 3,
-                  message: "Username must be at least 3 characters long",
-                },
-              })}
-              id="username"
-              type="text"
-              className={`w-full mt-1 rounded-md border-gray-300 ${errors.username ? "border-red-500" : ""
-                }`}
-            />
-            {errors.username && (
-              <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
-            )}
-          </div> */}
+                <div>
+                  <label htmlFor="username" className="block font-medium">
+                    Username
+                  </label>
+                  <input
+                    {...register("username", {
+                      required: "Username is required",
+                      minLength: {
+                        value: 3,
+                        message: "Username must be at least 3 characters long",
+                      },
+                    })}
+                    id="username"
+                    type="text"
+                    onChange={() => handleChange("username")}
+                    className={`w-full mt-1 rounded-md border-gray-300 ${
+                      errors.username ? "border-red-500" : ""
+                    }`}
+                  />
+                  {errors.username && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.username.message}
+                    </p>
+                  )}
+                </div>
                 <div>
                   <label htmlFor="password" className="block font-medium">
                     Password
@@ -85,6 +100,7 @@ const SignupPage = () => {
                     })}
                     id="password"
                     type="password"
+                    onChange={() => handleChange("password")}
                     className={`w-full mt-1 rounded-md border-gray-300 ${
                       errors.password ? "border-red-500" : ""
                     }`}
@@ -116,4 +132,5 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default LoginPage;
+

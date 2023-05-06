@@ -24,36 +24,50 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in!");
     },
+    getUserByUsername: async ({ username }) => {
+      try {
+        const user = await User.findOne({ username });
+        return {user};
+      } catch (ex) {
+        next(ex);
+      }
+    },
+    getAllMessages: async(parent, args) => {
+      try {
+        const messages = await Message.find()
+          .populate('chat')
+          .populate('user');
+        return messages;
+      } catch (ex) {
+        console.error(ex);
+        throw ex;
+      }
+    },
+    getAllFriends: async(parent, { username }) => {
+      try {
+        const user = await User.findOne({ username }).populate('friends');
+        const friends = user.friends;
+        return friends;
+      } catch (ex) {
+        console.error(ex);
+        throw ex;
+      }
+    },
   },
 
   Mutation: {
+
     addUser: async (parent, { username, email, password }) => {
       const user = await User.create({ username, email, password });
       const token = signToken(user);
       return { token, user };
     },
 
-    // Function below is for getting all users, not sure if needed, will need to refractor
-    // module.exports.getAllUsers = async (req, res, next) => {
-    //   try {
-    //     const users = await User.find({ _id: { $ne: req.params.id } }).select([
-    //       "email",
-    //       "username",
-    //       "avatarImage",
-    //       "_id",
-    //     ]);
-    //     return res.json(users);
-    //   } catch (ex) {
-    //     next(ex);
-    //   }
-    // };
-
-    // logs in users 
-    login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
+    login: async (parent, { username, password }) => {
+      const user = await User.findOne({ username });
 
       if (!user) {
-        throw new AuthenticationError("No user found with this email address");
+        throw new AuthenticationError("No user found with this username");
       }
 
       const correctPw = bcrypt.compare(password, User.password);
@@ -67,11 +81,10 @@ const resolvers = {
       return { token, user };
     },
 
-    //Adds chats between users
-    addChat: async (parent, { chatText }, context) => {
+    addChat: async (parent, { users }, context) => {
       if (context.user) {
         const chat = await Chat.create({
-          chatText,
+          users,
           chatAuthor: context.user.username,
         });
 
@@ -85,12 +98,10 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
 
-    //Removes chats between users
-
-    removeChat: async (parent, { chatId }, context) => {
+    removeChat: async (parent, { _id }, context) => {
       if (context.user) {
         const chat = await Chat.findOneAndDelete({
-          _id: chatId,
+          _id: _id,
           chatAuthor: context.user.username,
         });
 
@@ -108,37 +119,11 @@ const resolvers = {
       }
       throw new AuthenticationError("You need to be logged in!");
     },
-
-    //Message functions to get/add/delete messages
-    getMessages: async (parent, { from, to }, context) => {
+    
+    addMessage: async (parent, { _id, text }, context) => {
       if (context.user) {
         try {
-          const messages = await Chat.find({
-            users: {
-              $all: [from, to],
-            },
-          }).sort({ updatedAt: 1 });
-    
-          const projectedMessages = messages.map((msg) => {
-            return {
-              fromSelf: msg.chatAuthor.toString() === from,
-              message: msg.message.text,
-            };
-          });
-    
-          return projectedMessages;
-        } catch (ex) {
-          throw new Error("Could not fetch messages");
-        }
-      }
-      throw new AuthenticationError("You need to be logged in!");
-    },
-    
-    // adds chats between said User's
-    addMessage: async (parent, { to, message }, context) => {
-      if (context.user) {
-        try {
-          const recipient = await User.findOne({ username: to });
+          const recipient = await User.findOne({ username: _id });
     
           if (!recipient) {
             throw new Error("Recipient user does not exist");
@@ -148,13 +133,12 @@ const resolvers = {
             sender: context.user._id,
             users: [context.user._id, recipient._id],
             message: {
-              text: message,
+              text: text,
             },
           });
     
           await newMessage.save();
     
-          // send notification to recipient
           const notification = {
             title: "New message",
             body: `You have a new message from ${context.user.username}`,
@@ -171,13 +155,10 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
     
-
-    //removes messages from the Chat between Users
-
-    removeMessage: async (parent, { messageId }, context) => {
+    removeMessage: async (parent, { _id }, context) => {
       if (context.user) {
         try {
-          const message = await Chat.findById(messageId);
+          const message = await Chat.findById(_id);
 
           if (!message) {
             throw new Error("Message not found");
@@ -197,6 +178,43 @@ const resolvers = {
       throw new AuthenticationError("You need to be logged in!");
     },
   },
+
+  addFriend: async (parent, { username }, context) => {
+    if (context.user) {
+      const friend = await User.findOne({ username });
+  
+      if (!friend) {
+        throw new UserInputError("User not found!");
+      }
+  
+      await User.findOneAndUpdate(
+        { _id: context.user._id },
+        { $addToSet: { friends: friend._id } }
+      );
+  
+      return friend;
+    }
+    throw new AuthenticationError("You need to be logged in!");
+  },
+
+  removeFriend: async (parent, { username }, context) => {
+    if (context.user) {
+      const friend = await User.findOne({ username });
+  
+      if (!friend) {
+        throw new UserInputError("User not found!");
+      }
+  
+      await User.findOneAndUpdate(
+        { _id: context.user._id },
+        { $pull: { friends: friend._id } }
+      );
+  
+      return friend;
+    }
+    throw new AuthenticationError("You need to be logged in!");
+  },
+  
 };
 
 module.exports = resolvers;

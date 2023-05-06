@@ -1,8 +1,8 @@
-import Register from "./componets/Register/index";
+import Register from "./Pages/Register/index";
 import Home from "./Pages/Home/home";
 import Login from "./componets/Login/Login";
 import Header from "./componets/Header/index";
-import Chats from "./componets/Chats/Chats";
+import Chats from "./Pages/Chats/Chats";
 import {
   ApolloClient,
   ApolloProvider,

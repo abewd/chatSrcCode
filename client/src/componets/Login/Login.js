@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import "./Login.css";
+// import "./Login.css";
 const SignupPage = () => {
   const {
     register,
@@ -51,26 +51,29 @@ const SignupPage = () => {
                   )}
                 </div>
                 <div>
-            <label htmlFor="username" className="block font-medium">
-              Username
-            </label>
-            <input
-              {...register("username", {
-                required: "Username is required",
-                minLength: {
-                  value: 3,
-                  message: "Username must be at least 3 characters long",
-                },
-              })}
-              id="username"
-              type="text"
-              className={`w-full mt-1 rounded-md border-gray-300 ${errors.username ? "border-red-500" : ""
-                }`}
-            />
-            {errors.username && (
-              <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
-            )}
-          </div>
+                  <label htmlFor="username" className="block font-medium">
+                    Username
+                  </label>
+                  <input
+                    {...register("username", {
+                      required: "Username is required",
+                      minLength: {
+                        value: 3,
+                        message: "Username must be at least 3 characters long",
+                      },
+                    })}
+                    id="username"
+                    type="text"
+                    className={`w-full mt-1 rounded-md border-gray-300 ${
+                      errors.username ? "border-red-500" : ""
+                    }`}
+                  />
+                  {errors.username && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.username.message}
+                    </p>
+                  )}
+                </div>
                 <div>
                   <label htmlFor="password" className="block font-medium">
                     Password

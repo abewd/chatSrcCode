@@ -1,28 +1,18 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "./Login.css";
-
-const LoginPage = () => {
+const SignupPage = () => {
   const {
     register,
     handleSubmit,
-    trigger,
     formState: { errors },
-  } = useForm({
-    mode: "onTouched",
-  });
-
+  } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = (data) => {
     setIsSubmitting(true);
     console.log(data);
   };
-
-  const handleChange = async (field) => {
-    await trigger(field);
-  };
-
 
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center px-16">
@@ -35,7 +25,7 @@ const LoginPage = () => {
             <div className="w-full max-w-md formContainer">
               <h2 className="text-3xl font-bold text-center mb-8">Log In</h2>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <div>
+                <div>
                   <label htmlFor="email" className="block font-medium">
                     Email
                   </label>
@@ -44,13 +34,12 @@ const LoginPage = () => {
                       required: "Email is required",
                       pattern: {
                         // regex
-                        value: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
+                        value: /^\S+@\S+$/i,
                         message: "Invalid email address",
                       },
                     })}
                     id="email"
                     type="email"
-                    onChange={() => handleChange("email")}
                     className={`w-full mt-1 rounded-md border-gray-300 ${
                       errors.email ? "border-red-500" : ""
                     }`}
@@ -75,7 +64,6 @@ const LoginPage = () => {
                     })}
                     id="username"
                     type="text"
-                    onChange={() => handleChange("username")}
                     className={`w-full mt-1 rounded-md border-gray-300 ${
                       errors.username ? "border-red-500" : ""
                     }`}
@@ -100,7 +88,6 @@ const LoginPage = () => {
                     })}
                     id="password"
                     type="password"
-                    onChange={() => handleChange("password")}
                     className={`w-full mt-1 rounded-md border-gray-300 ${
                       errors.password ? "border-red-500" : ""
                     }`}
@@ -132,5 +119,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
-
+export default SignupPage;

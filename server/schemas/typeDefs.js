@@ -30,7 +30,7 @@ const typeDefs = gql`
     chats(username: String!): [Chat]
     chat(chatId: ID!): Chat
     me: User
-    getMessages( _id:ID!, text: String! ): [Chat]
+    getAllMessages( _id:ID!, text: String! ): [Chat]
     getUserByUsername(username: String!): User
     getAllFriends(username: String!): User
   }

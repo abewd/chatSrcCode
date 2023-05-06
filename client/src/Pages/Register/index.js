@@ -1,149 +1,229 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import "./index.css";
+/* eslint-disable no-unused-vars */
+import { useRef, useState, useEffect, useQuery } from "react";
+import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMutation } from "@apollo/client";
+import { ADD_USER } from "../../utils/mutations";
+// import { CHECK_USERNAME_QUERY } from "../../utils/queries";
+import './index.css';
+// import Loader from 'react-loaders';
 
-const SignupPage = () => {
-  const {
-    register,
-    handleSubmit,
-    trigger,
-    formState: { errors },
-  } = useForm({
-    mode: "onTouched",
-  });
+const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const EMAIL_REGEX = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const Register = () => {
 
-  const onSubmit = (data) => {
-    setIsSubmitting(true);
-    console.log(data); // replace with your actual submit function
-  };
+    const [ addUser, {error} ] = useMutation(ADD_USER)
 
-  const handleChange = async (field) => {
-    await trigger(field);
-  };
+    const userRef = useRef();
+    const errRef = useRef();
 
-  return (
-    <div className="bg-gray-50 min-h-screen flex items-center justify-center px-16">
-      <div className="relative w-full max-w-lg">
-        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        <div className="m-8 relative space-y-4">
-          <div className="flex flex-col items-center justify-center min-h-screen ">
-            <div className="w-full max-w-md formContainer">
-              <h2 className="text-3xl font-bold text-center mb-8">Sign Up</h2>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-  <div>
-    <label htmlFor="email" className="block font-medium">
-      Email
-    </label>
-    <input
-      {...register("email", {
-        required: "Email is required",
-        pattern: {
-          value: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
-          message: "Invalid email address",
-        },
-      })}
-      id="email"
-      type="email"
-      onChange={() => handleChange("email")}
-      className={`w-full mt-1 rounded-md border-gray-300 ${
-        errors.email ? "border-red-500" : ""
-      }`}
-    />
-    {errors.email && (
-      <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>
-    )}
-  </div>
-  <div>
-    <label htmlFor="username" className="block font-medium">
-      Username
-    </label>
-    <input
-      {...register("username", {
-        required: "Username is required",
-        minLength: {
-          value: 3,
-          message: "Username must be at least 3 characters long",
-        },
-      })}
-      id="username"
-      type="text"
-      onChange={() => handleChange("username")}
-      className={`w-full mt-1 rounded-md border-gray-300 ${
-        errors.username ? "border-red-500" : ""
-      }`}
-    />
-    {errors.username && (
-      <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
-    )}
-  </div>
-  <div>
-    <label htmlFor="password" className="block font-medium">
-      Password
-    </label>
-    <input
-      {...register("password", {
-        required: "Password is required",
-        minLength: {
-          value: 8,
-          message: "Password must be at least 8 characters long",
-        },
-      })}
-      id="password"
-      type="password"
-      onChange={() => handleChange("password")}
-      className={`w-full mt-1 rounded-md border-gray-300 ${
-        errors.password ? "border-red-500" : ""
-      }`}
-    />
-    {errors.password && (
-      <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>
-    )}
-  </div>
-  <div>
-    <label htmlFor="confirmPassword" className="block font-medium">
-      Confirm Password
-    </label>
-    <input
-      {...register("confirmPassword", {
-        required: "Confirm password is required",
-        validate: (value) =>
-          value === document.getElementById("password").value ||
-          "The passwords do not match",
-      })}
-      id="confirmPassword"
-      type="password"
-      className={`w-full mt-1 rounded-md border-gray-300 ${
-        errors.confirmPassword ? "border-red-500" : ""
-      }`}
-    />
-    {errors.confirmPassword && (
-      <p className="mt-1 text-sm text-red-500">
-        {errors.confirmPassword.message}
-      </p>
-    )}
-  </div>
-  <button
-    type="submit"
-    className={`w-full py-2 px-4 ${
-      isSubmitting
-        ? "bg-gray-400 cursor-not-allowed"
-        : "bg-blue-500 hover:bg-blue-600"
-    } text-white font-medium rounded-md transition-colors duration-300`}
-    disabled={isSubmitting}
-  >
-    {isSubmitting ? "Submitting..." : "Submit"}
-  </button>
-</form>
+    const [user, setUser] = useState('');
 
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-export default SignupPage;
+    const [validName, setValidName] = useState(false);
+    const [userFocus, setUserFocus] = useState(false);
+
+    // const [isUsernameTaken, setIsUsernameTaken] = useState(false);
+
+    const [pwd, setPwd] = useState('');
+    const [validPwd, setValidPwd] = useState(false);
+    const [pwdFocus, setPwdFocus] = useState(false);
+
+    const [matchPwd, setMatchPwd] = useState('');
+    const [validMatch, setValidMatch] = useState(false);
+    const [matchFocus, setMatchFocus] = useState(false);
+
+    const [email, setEmail] = useState('');
+    const [validEmail, setValidEmail] = useState(false);
+    const [emailFocus, setEmailFocus] = useState(false);
+
+    const [errMsg, setErrMsg] = useState('');
+    const [success, setSuccess] = useState(false);
+
+    useEffect(() => {
+        userRef.current.focus();
+    }, []);
+
+    useEffect(() => {
+        setValidName(USER_REGEX.test(user));
+    }, [user]);
+
+    useEffect(() => {
+        setValidPwd(PWD_REGEX.test(pwd));
+        setValidMatch(pwd === matchPwd);
+    }, [pwd, matchPwd]);
+
+    useEffect(() => {
+        setValidEmail(EMAIL_REGEX.test(email));
+    }, [email]);
+
+    useEffect(() => {
+        setErrMsg('');
+    }, [user, pwd, matchPwd, email])
+
+    // const { loading, wrong, data } = useQuery(CHECK_USERNAME_QUERY, {
+    //     variables: { username },
+    //     skip: !username, // skip query if username is empty
+    //   });
+
+    // useEffect(() => {
+    //     if (!loading && !wrong) {
+    //       setIsUsernameTaken(!!data.user);
+    //     }
+    //   }, [loading, wrong, data]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const v1 = USER_REGEX.test(user);
+        const v2 = PWD_REGEX.test(pwd);
+        const v3 = EMAIL_REGEX.test(email);
+        if (!v1 || !v2 || !v3) {
+            setErrMsg("Invalid Entry");
+            return;
+        }
+        try {
+            const { data } = await addUser({variables:{
+                username: user,
+                email: email,
+                password: pwd
+            }})
+            localStorage.setItem('id_token', data.addUser.token)
+            setSuccess(true);
+            setUser('');
+            setPwd('');
+            setMatchPwd('');
+            setEmail('');
+        } catch (err) {
+            if (!err?.response) {
+                setErrMsg('No Server Response');
+            } else if (err.response?.status === 409) {
+                setErrMsg('Username Taken');
+            } else {
+                setErrMsg('Registration Failed')
+            }
+            errRef.current.focus();
+        }
+    }
+
+    return (
+        <>
+            {success ? (
+                <section>
+                    <h1>Success!</h1>
+                    <p>
+                        <a href="/home">Home</a>
+                    </p>
+                </section>
+            ) : (
+                <section>
+                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                    <h1>Register</h1>
+                    <form onSubmit={handleSubmit}>
+                    <label htmlFor="email">
+                            Email:
+                            <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            autoComplete="off"
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            required
+                            aria-invalid={validEmail ? "false" : "true"}
+                            aria-describedby="emailnote"
+                            onFocus={() => setEmailFocus(true)}
+                            onBlur={() => setEmailFocus(false)}
+                        />
+                        <p id="emailnote" className={emailFocus && email && !validEmail ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            The email entered must be a vailid email.
+                        </p>
+
+                        <label htmlFor="username">
+                            Username:
+                            <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} className={validName || !user ? "hide" : "invalid"} />
+                        </label>
+                        <input
+                            type="text"
+                            id="username"
+                            ref={userRef}
+                            autoComplete="off"
+                            onChange={(e) => setUser(e.target.value)}
+                            value={user}
+                            required
+                            aria-invalid={validName ? "false" : "true"}
+                            aria-describedby="uidnote"
+                            onFocus={() => setUserFocus(true)}
+                            onBlur={() => setUserFocus(false)}
+                        />
+                        {/* {username && !isUsernameAvailable && <p>Username is already taken.</p>} */}
+                        <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            4 to 24 characters.<br />
+                            Must begin with a letter.<br />
+                            Letters, numbers, underscores, hyphens allowed.
+                        </p>
+                        <label htmlFor="password">
+                            Password:
+                            <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            onChange={(e) => setPwd(e.target.value)}
+                            value={pwd}
+                            required
+                            aria-invalid={validPwd ? "false" : "true"}
+                            aria-describedby="pwdnote"
+                            onFocus={() => setPwdFocus(true)}
+                            onBlur={() => setPwdFocus(false)}
+                        />
+                        <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            8 to 24 characters.<br />
+                            Must include uppercase and lowercase letters, a number and a special character.<br />
+                            Allowed special characters: <span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>
+                        </p>
+
+                        <label htmlFor="confirm_pwd">
+                            Confirm Password:
+                            <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
+                        </label>
+                        <input
+                            type="password"
+                            id="confirm_pwd"
+                            onChange={(e) => setMatchPwd(e.target.value)}
+                            value={matchPwd}
+                            required
+                            aria-invalid={validMatch ? "false" : "true"}
+                            aria-describedby="confirmnote"
+                            onFocus={() => setMatchFocus(true)}
+                            onBlur={() => setMatchFocus(false)}
+                        />
+                        <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                            Must match the previous password used.
+                        </p>
+
+                        <button disabled={!validName || !validPwd || !validMatch ? true : false}>Create account</button>
+                    </form>
+                    <p>
+                        Already have an account?<br />
+                        <span className="line">
+                            <a href="./Signin">Sign In</a>
+                        </span>
+                    </p>
+                </section>
+            )}
+            {/* <Loader type="pacman" /> */}
+        </>
+    )
+}
+
+export default Register

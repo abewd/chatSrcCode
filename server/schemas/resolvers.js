@@ -182,16 +182,16 @@ const resolvers = {
   addFriend: async (parent, { username }, context) => {
     if (context.user) {
       const friend = await User.findOne({ username });
-  
+
       if (!friend) {
         throw new UserInputError("User not found!");
       }
-  
+
       await User.findOneAndUpdate(
         { _id: context.user._id },
         { $addToSet: { friends: friend._id } }
       );
-  
+
       return friend;
     }
     throw new AuthenticationError("You need to be logged in!");

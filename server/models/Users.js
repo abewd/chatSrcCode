@@ -26,6 +26,16 @@ const userSchema = new Schema({
       ref: 'Chat',
     },
   ],
+  friends: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ]
+});
+
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length;
 });
 
 userSchema.pre('save', async function (next) {

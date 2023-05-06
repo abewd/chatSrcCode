@@ -1,5 +1,27 @@
 [
     {
-
+        "chatText": "Hello",
+        "users": "AbewdIsCool",
+        "createdAt": "2023-04-27 09:30:15"
+    },
+    {
+        "chatText": "Hello",
+        "users": "AdzyIsCool",
+        "createdAt": "2023-04-27 09:30:15"
+    },
+    {
+        "chatText": "Jordan",
+        "users": "AbewdIsCool",
+        "createdAt": "2023-04-27 09:30:15"
+    },
+    {
+        "chatText": "test-user",
+        "users": "AbewdIsCool",
+        "createdAt": "2023-04-27 09:30:15"
+    },
+    {
+        "chatText": "user-testing",
+        "users": "AbewdIsCool",
+        "createdAt": "2023-04-27 09:30:15"
     }
 ]

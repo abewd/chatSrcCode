@@ -13,7 +13,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    match: [/.+@.+\..+/, 'Must match an email address!'],
+    match: [/^\S+@\S+$/i, 'Must match an email address!'],
   },
   password: {
     type: String,
@@ -26,6 +26,16 @@ const userSchema = new Schema({
       ref: 'Chat',
     },
   ],
+  friends: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ]
+});
+
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length;
 });
 
 userSchema.pre('save', async function (next) {

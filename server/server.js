@@ -29,33 +29,34 @@ app.get('/', (req, res) => {
 });
 
 // Socket.io setup
-// const httpServer = require('http').createServer(app);
-// const io = require('socket.io')(httpServer, {
-//   cors: {
-//     origin: 'http://localhost:3000',
-//     credentials: true,
-//   },
-// });
+const httpServer = require('http').createServer(app);
+const io = require('socket.io')(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+    credentials: true,
+  },
+});
+
+io.on('connection', (socket) => {
+  console.log('User connected', socket.id);
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected', socket.id);
+  });
+
+  socket.on('new-message', async (message) => {
+    console.log('New message received', message);
+
+    const newMessage = await Message.create(message);
+
+    io.emit('new-message', newMessage);
+  });
+});
 
 const startApolloServer = async () => {
-  // io.on('connection', (socket) => {
-  //   console.log('User connected', socket.id);
-
-  //   socket.on('disconnect', () => {
-  //     console.log('User disconnected', socket.id);
-  //   });
-
-  //   socket.on('new-message', async (message) => {
-  //     console.log('New message received', message);
-
-  //     const newMessage = await Message.create(message);
-
-  //     io.emit('new-message', newMessage);
-  //   });
-  // });
 
   await server.start();
-  server.applyMiddleware({ app /*, path: '/graphql'*/ });
+  server.applyMiddleware({ app });
 
   db.once('open', () => {
     app.listen(PORT, () => {

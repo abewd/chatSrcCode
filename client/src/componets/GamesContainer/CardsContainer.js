@@ -6,7 +6,7 @@ import {
   Typography,
   Avatar,
 } from "@material-tailwind/react";
-import { StarIcon } from "@heroicons/react/24/solid";
+import { StarIcon } from "@heroicons/react/solid";
 
 const CardsContainer = () => {
   return (

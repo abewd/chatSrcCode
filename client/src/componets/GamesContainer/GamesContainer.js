@@ -1,5 +1,6 @@
 import React from "react";
 import CardsContainer from "./CardsContainer";
+
 const GamesContainer = () => {
   return (
     <div>
